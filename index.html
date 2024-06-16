@@ -210,6 +210,13 @@
         .highlight-green {
             color: green;
         }
+        .additional-message {
+            font-size: 20px;
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -288,14 +295,15 @@
             </div>
         </div>
     </div>
+    <p class="additional-message">Pentru aplicatia care trimit monedele trimite ceva de 1000 de monede</p>
 
     <!-- The Modal -->
     <div id="popup" class="popup">
         <span class="close">&times;</span>
         <h2 id="popup-coins"></h2>
-        <input type="text" id="recipient" name="recipient" placeholder="Introduceți destinatarul">
+        <input type="text" id="recipient" name="recipient" placeholder="Inserisci destinatario">
         <div id="custom-coins-input-container" style="display:none;">
-            <input type="number" id="custom-coins" name="custom-coins" placeholder="Introduceți numărul de monede">
+            <input type="number" id="custom-coins" name="custom-coins" placeholder="Inserisci numero di monete">
         </div>
         <button class="submit-button" id="submit-button">TRIMITE</button>
     </div>
@@ -305,7 +313,7 @@
     <div id="success-popup" class="success-popup">
         <span class="close" id="success-close">&times;</span>
         <h2 id="success-message"></h2>
-        <p class="success-message">Monedele vor fi creditate în 30-40 de minute</p>
+        <p class="success-message">monedele vor fi creditate în 30-40 de minute</p>
     </div>
 
     <script>
