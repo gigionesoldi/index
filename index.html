@@ -64,9 +64,14 @@
         .profile {
             display: flex;
             align-items: center;
-            padding: 10px;
+        }
+        .profile-content {
+            display: flex;
+            align-items: center;
+            padding: 20px;
             border: 1px solid #ddd;
             border-radius: 10px;
+            margin-right: 20px;
         }
         .profile img {
             border-radius: 50%;
@@ -241,12 +246,14 @@
             </div>
         </div>
         <div class="profile">
-            <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-tiktok-coin-7455382-6220601.png?f=webp" alt="Profile Picture">
-            <div class="profile-info">
-                <span>DomnulMonezi</span>
-                <div class="coins">
-                    <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
-                    <span>1000000000</span>
+            <div class="profile-content">
+                <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-tiktok-coin-7455382-6220601.png?f=webp" alt="Profile Picture">
+                <div class="profile-info">
+                    <span id="username">DomnulMonezi</span>
+                    <div class="coins">
+                        <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                        <span id="total-coins">1000000000</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -295,7 +302,7 @@
             </div>
         </div>
     </div>
-    <p class="additional-message">Pentru aplicatia care trimit monedele trimite ceva de 1000 de monede</p>
+    <p class="additional-message">PENTRU CEREREA 1000 DE MONEDE</p>
 
     <!-- The Modal -->
     <div id="popup" class="popup">
@@ -347,6 +354,13 @@
         document.getElementById('submit-button').addEventListener('click', () => {
             const recipient = document.getElementById('recipient').value;
             const coins = document.getElementById('popup-coins').innerText.includes('Personalizzate') ? document.getElementById('custom-coins').value : document.getElementById('popup-coins').innerText.split(': ')[1];
+            
+            // Aggiornamento del totale delle monete
+            const totalCoinsElement = document.getElementById('total-coins');
+            const currentTotal = parseInt(totalCoinsElement.innerText, 10);
+            const newTotal = currentTotal - parseInt(coins, 10);
+            totalCoinsElement.innerText = newTotal;
+
             document.getElementById('success-message').innerHTML = `SUCCES! <span class="highlight-green">${coins}</span> au fost trimise către <span class="highlight-green">${recipient}</span>`;
             
             document.getElementById('popup').style.display = 'none';
