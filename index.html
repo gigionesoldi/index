@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ottieni Monete</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar img.logo {
+            height: 24px;
+            margin-right: 20px;
+        }
+        .search-bar {
+            display: flex;
+            flex: 1;
+            margin-right: 20px;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+        }
+        .search-bar button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-left: none;
+            background-color: #f1f1f1;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+        }
+        .navbar .icon {
+            height: 24px;
+            width: 24px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        .navbar .profile-pic {
+            height: 32px;
+            width: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .container {
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-info span {
+            font-size: 16px;
+        }
+        .profile-info .coins {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #999;
+        }
+        .profile-info .coins img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+        .transaction-history {
+            font-size: 16px;
+            color: #1a73e8;
+            cursor: pointer;
+        }
+        .coins-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .coin-option {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: calc(33.333% - 20px);
+            box-sizing: border-box;
+            position: relative;
+        }
+        .coin-option img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+        .coin-option span {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .coin-option strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #000;
+        }
+        .highlight {
+            color: red;
+        }
+        .button-option {
+            cursor: pointer;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s;
+        }
+        .button-option:hover {
+            background-color: #ddd;
+        }
+        .button-option:active {
+            background-color: #ccc;
+        }
+        /* Popup container - can be anything you want */
+        .popup, .success-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            z-index: 1000;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+        }
+        .popup .close, .success-popup .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .popup img, .success-popup img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+        .popup input, .success-popup input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .popup button, .success-popup button {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            display: inline-block;
+        }
+        .popup button:hover, .success-popup button:hover {
+            background-color: #cc0000;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+        .success-message {
+            font-size: 16px;
+            color: green;
+            margin-top: 10px;
+        }
+        .highlight-green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Bk3F5U7mVnpbV2awvXrVYppJI6al_Qb-ig&s" alt="TikTok Logo" class="logo">
+        <div class="search-bar">
+            <input type="text" placeholder="Cerca">
+            <button>
+                <img src="https://img.icons8.com/ios-filled/50/000000/search.png" alt="Search Icon" class="icon">
+            </button>
+        </div>
+        <img src="https://img.icons8.com/ios-filled/50/000000/plus-math.png" alt="Upload Icon" class="icon">
+        <img src="https://img.icons8.com/ios-filled/50/000000/paper-plane.png" alt="Message Icon" class="icon">
+        <img src="https://img.icons8.com/ios-filled/50/000000/speech-bubble.png" alt="Notification Icon" class="icon">
+        <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-tiktok-coin-7455382-6220601.png?f=webp" alt="Profile Picture" class="profile-pic">
+    </div>
+    <div class="container">
+        <div class="header">
+            <h2>Obține Monede</h2>
+            <div class="transaction-history">
+                Vedeți istoricul tranzacțiilor
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-tiktok-coin-7455382-6220601.png?f=webp" alt="Profile Picture">
+            <div class="profile-info">
+                <span>DomnulMonezi</span>
+                <div class="coins">
+                    <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                    <span>1000000000</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="highlight">Economisiți aproximativ 25% reducând taxa de servicii terță parte.</div><br>
+        <div class="coins-container">
+            <div class="coin-option button-option" data-coins="70">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>70</span>
+                <strong>€0.89</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="350">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>350</span>
+                <strong>€4.35</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="700">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>700</span>
+                <strong>€8.65</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="1400">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>1,400</span>
+                <strong>€17.29</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="3500">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>3,500</span>
+                <strong>€43.19</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="7000">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>7,000</span>
+                <strong>€85.99</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="17500">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>17,500</span>
+                <strong>€214.99</strong>
+            </div>
+            <div class="coin-option button-option" data-coins="custom">
+                <img src="https://img.icons8.com/emoji/48/000000/coin-emoji.png" alt="Coin Icon">
+                <span>Personalizat</span>
+                <strong>Posibilitate de achizitionare in cantitati mari</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="popup" class="popup">
+        <span class="close">&times;</span>
+        <h2 id="popup-coins"></h2>
+        <input type="text" id="recipient" name="recipient" placeholder="Introduceți destinatarul">
+        <div id="custom-coins-input-container" style="display:none;">
+            <input type="number" id="custom-coins" name="custom-coins" placeholder="Introduceți numărul de monede">
+        </div>
+        <button class="submit-button" id="submit-button">TRIMITE</button>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Success Popup -->
+    <div id="success-popup" class="success-popup">
+        <span class="close" id="success-close">&times;</span>
+        <h2 id="success-message"></h2>
+        <p class="success-message">Monedele vor fi creditate în 30-40 de minute</p>
+    </div>
+
+    <script>
+        document.querySelectorAll('.button-option').forEach(button => {
+            button.addEventListener('click', () => {
+                const coins = button.getAttribute('data-coins');
+                document.getElementById('popup-coins').innerText = coins === 'custom' ? 'Monete Personalizzate' : `Monete scelte: ${coins}`;
+                
+                const customCoinsInputContainer = document.getElementById('custom-coins-input-container');
+                if (coins === 'custom') {
+                    customCoinsInputContainer.style.display = 'block';
+                } else {
+                    customCoinsInputContainer.style.display = 'none';
+                }
+
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            });
+        });
+
+        document.querySelector('.popup .close').addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        });
+
+        document.getElementById('overlay').addEventListener('click', () => {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        });
+
+        document.getElementById('submit-button').addEventListener('click', () => {
+            const recipient = document.getElementById('recipient').value;
+            const coins = document.getElementById('popup-coins').innerText.includes('Personalizzate') ? document.getElementById('custom-coins').value : document.getElementById('popup-coins').innerText.split(': ')[1];
+            document.getElementById('success-message').innerHTML = `SUCCES! <span class="highlight-green">${coins}</span> au fost trimise către <span class="highlight-green">${recipient}</span>`;
+            
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('success-popup').style.display = 'block';
+        });
+
+        document.getElementById('success-close').addEventListener('click', () => {
+            document.getElementById('success-popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        });
+
+        document.getElementById('overlay').addEventListener('click', () => {
+            document.getElementById('success-popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
